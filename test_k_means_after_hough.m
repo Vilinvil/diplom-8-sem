@@ -1,4 +1,7 @@
 clear;close all;
+addpath('.\figure');
+addpath('.\utils_arrays');
+
 image = imread('./test1_.jpg');
 figure, imshow(image);title('original');
 image = rgb2gray(image);
@@ -7,27 +10,23 @@ image = rgb2gray(image);
 %gausImg = imgaussfilt(image,2);
 %figure, imshow(gausImg);title('gaus');
 
-cannyImg=edge(image,'canny', [], 2); % 3.4 begin
+cannyImg=edge(image,'canny', [], 3.4); % 3.4 begin
 figure,imshow(cannyImg);title('canny');
 
 
 [H,theta,rho] = hough(cannyImg);
 
-% figure;
-% imshow(imadjust(mat2gray(H)),'XData',theta,'YData',rho,'InitialMagnification','fit');
-% title('Hough transform');
-% xlabel('\theta'), ylabel('\rho');
+% figure_hough_space(H, theta, rho);
 
 peaks = houghpeaks(H,5,'threshold',ceil(0.7*max(H(:)))); % 0.7 begin
 
-% axis on, axis normal, hold on;
-% plot(theta(peaks(:,2)),rho(peaks(:,1)),'s','color','red');
+% figure_peaks_hough_space(peaks, theta, rho);
 
 lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',5,'MinLength',7);
 
 figure, imshow(image),title('lines'), hold on;
 
-points = transpose([lines.point1; lines.point2]);
+points = convert_lines_in_points(lines);
 plot(points(:,1),points(:,2),'k*','MarkerSize',5);
 
 
