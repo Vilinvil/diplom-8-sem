@@ -2,6 +2,8 @@ clear;close all;
 addpath('.\figure');
 addpath('.\utils_arrays');
 
+rng(1); % TODO remove because this for repeated results
+
 image = imread('./test1_.jpg');
 figure, imshow(image);title('original');
 image = rgb2gray(image);
@@ -26,7 +28,6 @@ figure, imshow(image),title('lines'), hold on;
 points = convert_lines_in_points(lines, 10);
 plot(points(:, 1), points(:, 2), 'k*','MarkerSize',5)
 
-rng(1); % TODO remove because this for repeated results
 for numberClasses = 1:6
     [classIdxes, centerPoints] = kmeans(points, numberClasses);
     figure, imshow(image),title('linesClassificated numberClasses = ' + string(numberClasses)), hold on;
