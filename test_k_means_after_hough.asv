@@ -13,10 +13,13 @@ image = rgb2gray(image);
 cannyImg=edge(image,'canny', [], 3.4); % 3.4 begin
 figure,imshow(cannyImg);title('canny');
 
+
 [H,theta,rho] = hough(cannyImg);
-peaks = houghpeaks(H,5,'threshold',ceil(0.2*max(H(:)))); % 0.7 begin
 
 % figure_hough_space(H, theta, rho);
+
+peaks = houghpeaks(H,5,'threshold',ceil(0.7*max(H(:)))); % 0.7 begin
+
 % figure_peaks_hough_space(peaks, theta, rho);
 
 lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',5,'MinLength',7);
@@ -24,11 +27,23 @@ lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',5,'MinLength',7);
 figure, imshow(image),title('lines'), hold on;
 
 points = convert_lines_in_points(lines, 10);
-plot(points(:, 1), points(:, 2), 'k*','MarkerSize',5)
+plot(points(:,1),points(:,2),'k*','MarkerSize',5);
 
 rng(1); % TODO remove because this for repeated results
-for numberClasses = 1:6
-    [classIdxes, centerPoints] = kmeans(points, numberClasses);
-    figure, imshow(image),title('linesClassificated numberClasses = ' + string(numberClasses)), hold on;
-    figure_classificated_points(points, classIdxes, numberClasses);
-end
+[classIdx, centerPoints] = kmeans(points, 2);
+
+
+
+% maxLen = 0;
+% for k = 1:length(lines)
+%    xy = [lines(k).point1; lines(k).point2];
+%    plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+% 
+%    len = norm(lines(k).point1 - lines(k).point2);
+%    if ( len > maxLen)
+%       maxLen = len;
+%       xyLong = xy;
+%    end
+% end
+% 
+% plot(xyLong(:,1),xyLong(:,2),'LineWidth',2,'Color','red');
