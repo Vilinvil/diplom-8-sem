@@ -23,14 +23,13 @@ function [points] = convert_lines_in_points_evenly(lines, maxDiff)
             curY = curY + stepY;
         end
     end 
-
-    % points = points(1,:);
 end
 
 function [stepX, stepY] = findDivisionSteps(minX, maxX, minY, maxY, maxDiff)
   amountDivisionStep = 2;
   stepX = (maxX - minX) / amountDivisionStep;
   stepY = (maxY - minY) / amountDivisionStep;
+
   while ((stepX^2 + stepY^2)^(1/2) >= maxDiff)
     amountDivisionStep = amountDivisionStep + 1; 
       stepX = (maxX - minX) / amountDivisionStep;
