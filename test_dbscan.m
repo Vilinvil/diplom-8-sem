@@ -1,8 +1,8 @@
 clear;close all;
-addpath('.\figure');
-addpath('.\utils_arrays');
+addpath('figure');
+addpath('utils\arrays');
 
-rng(10); % TODO remove because this for repeated results
+rng(1); % TODO remove because this for repeated results
 
 image = imread('./test1_.jpg');
 figure, imshow(image);title('original');
@@ -24,10 +24,11 @@ peaks = houghpeaks(H,5,'threshold',ceil(0.2*max(H(:)))); % 0.7 begin
 lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',5,'MinLength',7);
 
 figure, imshow(image),title('lines'), hold on;
+   
+maxDiff = 1;
+points = convert_lines_in_points_evenly(lines, maxDiff);
 
-points = convert_lines_in_points(lines, 10);
-
-classIdxes = dbscan(points, 0.9, 2);
+classIdxes = dbscan(points, maxDiff, 2);
 numberClasses = max(classIdxes);
 
 for i = 1:length(classIdxes)
@@ -39,3 +40,6 @@ end
 numberClasses = numberClasses + 1;
 
 figure_classificated_points(points, classIdxes, numberClasses);
+
+% TODO remove from work code for debug only
+% mergePoints = [points,  classIdxes];
