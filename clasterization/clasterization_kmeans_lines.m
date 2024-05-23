@@ -1,7 +1,7 @@
-function clasterization_kmeans_lines(lines, image)
+function [mergeResult] = clasterization_kmeans_lines(lines, image)
     maxY = size(image, 2);
 
-    [K, B] = convert_lines_to_parameters(lines);
+    [K, B] = convert_lines_to_parameters(lines, maxY);
     
     figure, imshow(image),title('lines'), hold on;
     figure_lines_by_parameters(K, B, maxY, 'green');
@@ -17,5 +17,6 @@ function clasterization_kmeans_lines(lines, image)
             string(curNumberClasses)), hold on;
         figure_classificated_lines_by_parametrs(K, B, maxY, classIdxes, curNumberClasses);
     end
-
+    
+    mergeResult = [phi, normB, classIdxes];
 end
