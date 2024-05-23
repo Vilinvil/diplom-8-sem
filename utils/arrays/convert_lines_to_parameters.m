@@ -15,8 +15,8 @@ idxCurLine = 1;
            countLines = countLines + 1; 
         end
 
-        [curK, curB] = calc_parameters_of_line(curLine.point1, ...
-            curLine.point2);
+        [curK, curB] = calc_parameters_of_line_by_rho_theta( ... 
+            curLine.rho, curLine.theta * 2 * pi / 360);
         K(idxCurLine) = curK;
         B(idxCurLine) = curB;
 
