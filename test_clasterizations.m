@@ -28,10 +28,38 @@ lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',3,'MinLength',5);
 figure, imshow(image),title('points'), hold on;
 figure_lines_by_two_points(lines);
 
+maxY = size(image, 2);
+[K, B] = convert_lines_to_parameters(lines, maxY);
+
+figure, imshow(image),title('lines'), hold on;
+figure_lines_by_parameters(K, B, maxY, 'green');
 
 % clasterization_kmeans_points(lines, image);
 % clasterization_dbscan_points(lines, image);
-[mergeResultKmeansLines] = clasterization_kmeans_lines(lines, image);
-[mergeResultDbsacnLines] = clasterization_dbscan_lines(lines, image);
 
-totalMergeResult = [mergeResultKmeansLines, mergeResultDbsacnLines];
+phi = atan(K);
+normB = B / max(B(:));
+lineParameters = [phi, normB];
+
+minNumberClasses = 2;
+maxNumberClasses = 5; 
+[KmeansLinesMergeResult] = clasterization_kmeans_lines(lineParameters, ...
+    minNumberClasses, maxNumberClasses);
+
+for curIdxMergeResult = 1:(maxNumberClasses - minNumberClasses + 1)
+        figure, imshow(image),title('Метод kmeans_lines, число классов = ' + ...
+            string(KmeansLinesMergeResult.numberClasses)), hold on;
+        figure_classificated_lines_by_parametrs(K, B, maxY, ...
+            KmeansLinesMergeResult.classIdxes(:, curIdxMergeResult), KmeansLinesMergeResult.numberClasses);
+end
+
+maxDiff = 0.1;
+minCountNeighbors = 2;
+[DbscanLinesClassIdxess, DbscanLinesNumberClasses] = ... 
+    clasterization_dbscan_lines(lineParameters, maxDiff, minCountNeighbors);
+
+    
+figure, imshow(image),title('Метод dbscan_lines, число классов=' + ...
+    string(DbscanLinesNumberClasses)), hold on;
+figure_classificated_lines_by_parametrs(K, B, maxY, ...
+    DbscanLinesClassIdxess, DbscanLinesNumberClasses);

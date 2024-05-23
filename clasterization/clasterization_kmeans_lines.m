@@ -1,22 +1,19 @@
-function [mergeResult] = clasterization_kmeans_lines(lines, image)
-    maxY = size(image, 2);
+function [mergeResult] = clasterization_kmeans_lines(lineParameters, ...
+    minNumberClasses, maxNumberClasses)
 
-    [K, B] = convert_lines_to_parameters(lines, maxY);
+    curNumberClasses = minNumberClasses;
+
+    mergeResult.classIdxes = zeros([size(lineParameters, 1)  ...
+         (maxNumberClasses - minNumberClasses + 1)]);
+    curIdxMergeResult = 1;
     
-    figure, imshow(image),title('lines'), hold on;
-    figure_lines_by_parameters(K, B, maxY, 'green');
-    
-    numberClasses = 6;
-    phi = atan(K);
-    normB = B / max(B(:));
-    lineParameters = [phi, normB];
-    
-    for curNumberClasses = 3:numberClasses
+    while curNumberClasses <= maxNumberClasses
         [classIdxes, ~] = kmeans(lineParameters, curNumberClasses);
-        figure, imshow(image),title('Classificated by K,B param numberClasses = ' + ...
-            string(curNumberClasses)), hold on;
-        figure_classificated_lines_by_parametrs(K, B, maxY, classIdxes, curNumberClasses);
+        mergeResult.classIdxes(:, curIdxMergeResult) = classIdxes;
+        mergeResult.numberClasses = curNumberClasses;
+
+        curNumberClasses = curNumberClasses + 1;
+        curIdxMergeResult = curIdxMergeResult + 1;
     end
-    
-    mergeResult = [phi, normB, classIdxes];
+
 end

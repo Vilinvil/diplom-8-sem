@@ -3,7 +3,8 @@ function figure_classificated_lines_by_parametrs(K, B, maxY, classIdxes, numberC
     % difColor = 1 / numberClasses;
     for idxLine = 1:length(K)
         curClassIdx = classIdxes(idxLine);
-        figure_lines_by_parameters(K(idxLine), B(idxLine), maxY, linesColor(curClassIdx,:))
+        figure_lines_by_parameters(K(idxLine), B(idxLine), ...
+            maxY, linesColor(curClassIdx,:))
         % plot(points(idxLine,1),points(idxLine,2),'k*','MarkerSize',5, 'Color', [ 0 0 difColor * curClassIdx]);
     end
 
