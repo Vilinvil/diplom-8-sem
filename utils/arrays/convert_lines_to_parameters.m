@@ -1,4 +1,4 @@
-function [K, B] = convert_lines_to_parameters(lines, maxY)
+function [K, B, lines] = convert_lines_to_parameters(lines, maxY)
 addpath('utils\');
 K = zeros([length(lines) 1]);
 B = zeros([length(lines) 1]);
@@ -23,10 +23,6 @@ idxCurLine = 1;
         idxCurLine = idxCurLine + 1; 
     end
 
-end
-
-function [len] = get_len_line(line)
-    len = sqrt((line.point1(1) - line.point2(1))^2 + (line.point1(2) - line.point2(2))^2);
 end
 
 function [line1, line2] = divide_line_to_two_lines(line)
