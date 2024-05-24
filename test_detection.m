@@ -5,7 +5,7 @@ rng(1); % TODO remove because this for repeated results
 
 image = imread('./test1_2_degree.jpg');
 
-figure, imshow(image);title('original');
+figure, imshow(image);title('Изначально');
 image = rgb2gray(image);
 % figure, imshow(image);title('gray');
 
@@ -25,13 +25,13 @@ peaks = houghpeaks(H,4,'threshold',thresholdHoug);
  % figure_peaks_hough_space(peaks, theta, rho);
 
 lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',3,'MinLength',5);
-figure, imshow(image),title('points'), hold on;
+figure, imshow(image),title('После выделения отрезков'), hold on;
 figure_lines_by_two_points(lines);
 
 maxY = size(image, 2);
 [K, B, lines] = convert_lines_to_parameters(lines, maxY);
 
-figure, imshow(image),title('lines'), hold on;
+figure, imshow(image),title('Прямые'), hold on;
 figure_lines_by_parameters(K, B, maxY, 'green');
 
 % clasterization_kmeans_points(lines, image);
