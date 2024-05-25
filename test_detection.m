@@ -1,41 +1,25 @@
 clear;close all;
-addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection');
+addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
-rng(1); % TODO remove because this for repeated results
+imageFileName = ('./test_image.jpg');
+gausSigma = 2.4;
+cannyThreshold = [];
+houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
 
-image = imread('./test1_2_degree.jpg');
+[lines, blackWhiteImage] = get_borders_lines( ...
+    imageFileName,  gausSigma, cannyThreshold, houghParams);
 
-figure, imshow(image);title('Изначально');
-image = rgb2gray(image);
-% figure, imshow(image);title('gray');
-
-gausImg = imgaussfilt(image,2);
-%figure, imshow(gausImg);title('gaus');
-
-cannyImg=edge(image,'canny', [], 1.47); 
-figure,imshow(cannyImg);title('canny');
-
-[H,theta,rho] = hough(cannyImg);
-
-maxH = max(H(:));
-thresholdHoug = ceil(0.5*maxH);
-peaks = houghpeaks(H,4,'threshold',thresholdHoug);
-
- % figure_hough_space(H, theta, rho);
- % figure_peaks_hough_space(peaks, theta, rho);
-
-lines = houghlines(cannyImg,theta,rho,peaks,'FillGap',3,'MinLength',5);
-figure, imshow(image),title('После выделения отрезков'), hold on;
+figure, imshow(blackWhiteImage),title('После выделения отрезков'), hold on;
 figure_lines_by_two_points(lines);
 
-maxY = size(image, 2);
+maxY = size(blackWhiteImage, 2);
 [K, B, lines] = convert_lines_to_parameters(lines, maxY);
 
-figure, imshow(image),title('Прямые'), hold on;
+figure, imshow(blackWhiteImage),title('Прямые'), hold on;
 figure_lines_by_parameters(K, B, maxY, 'green');
 
-% clasterization_kmeans_points(lines, image);
-% clasterization_dbscan_points(lines, image);
+% clasterization_kmeans_points(lines, blackWhiteImage);
+% clasterization_dbscan_points(lines, blackWhiteImage);
 
 phi = atan(K);
 normB = B / max(B(:));
@@ -47,7 +31,7 @@ lineParameters = [phi, normB];
 %     minNumberClasses, maxNumberClasses);
 % 
 % for curIdxMergeResult = 1:(maxNumberClasses - minNumberClasses + 1)
-%         figure, imshow(image),title('Метод kmeans lines, число классов = ' + ...
+%         figure, imshow(blackWhiteImage),title('Метод kmeans lines, число классов = ' + ...
 %             string(KmeansLinesMergeResult.numberClasses)), hold on;
 %         figure_classificated_lines_by_parametrs(K, B, maxY, ...
 %             KmeansLinesMergeResult.classIdxes(:, curIdxMergeResult), KmeansLinesMergeResult.numberClasses);
@@ -59,7 +43,7 @@ minCountNeighbors = 2;
     clasterization_dbscan_lines(lineParameters, maxDiff, minCountNeighbors);
 
     
-figure, imshow(image),title('Метод dbscan lines, число классов=' + ...
+figure, imshow(blackWhiteImage),title('Метод dbscan lines, число классов=' + ...
     string(DbscanLinesNumberClasses) + ' Eсть ли не классифицированные=' + ...
     string(DbscanFlagExistenceMinus)), hold on;
 figure_classificated_lines_by_parametrs(K, B, maxY, ...
@@ -67,13 +51,13 @@ figure_classificated_lines_by_parametrs(K, B, maxY, ...
 
 lengths = convert_lines_to_lengths(lines);
 
-%  15 degrees
-thresholdK = 15 * pi / 180; 
+%  20 degrees
+thresholdK = 20 * pi / 180; 
 
 [kAxis, bAxis, k1, b1, k2 , b2] = detect_axis_of_symmetry(lengths, K, B, ... 
     DbscanLinesClassIdxess, DbscanLinesNumberClasses, thresholdK);
 
-figure, imshow(image),title('Ось трубопровода'), hold on;
+figure, imshow(blackWhiteImage),title('Ось трубопровода'), hold on;
 figure_lines_by_parameters(kAxis, bAxis, maxY, 'red');
 figure_lines_by_parameters(k1, b1, maxY, 'green');
 figure_lines_by_parameters(k2, b2, maxY, 'green');
