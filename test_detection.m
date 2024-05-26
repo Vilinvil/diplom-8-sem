@@ -1,7 +1,7 @@
 clear;close all;
 addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
-imageFileName = ('./test1_1.jpg');
+imageFileName = ('./test_image.jpg');
 cannySigma = 1.4;
 cannyThreshold = [];
 houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
