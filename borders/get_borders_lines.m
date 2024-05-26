@@ -9,10 +9,9 @@ function [lines, blackWhiteImage] = get_borders_lines( ...
 
     gausImg = imgaussfilt(blackWhiteImage, 1);
     %figure, imshow(gausImg);title('gaus');
-
     
     cannyImg=edge(gausImg,'canny', cannyTreshold, cannySigma); 
-    figure,imshow(cannyImg);title('canny');
+    figure,imshow((cannyImg - 1) * -1);title('canny');
     
     [H,theta,rho] = hough(cannyImg);
     
