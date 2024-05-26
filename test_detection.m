@@ -2,12 +2,12 @@ clear;close all;
 addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
 imageFileName = ('./test_image.jpg');
-gausSigma = 2.4;
+cannySigma = 1.4;
 cannyThreshold = [];
 houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
 
 [lines, blackWhiteImage] = get_borders_lines( ...
-    imageFileName,  gausSigma, cannyThreshold, houghParams);
+    imageFileName,  cannySigma, cannyThreshold, houghParams);
 
 figure, imshow(blackWhiteImage),title('После выделения отрезков'), hold on;
 figure_lines_by_two_points(lines);
