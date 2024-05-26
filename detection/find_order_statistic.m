@@ -1,4 +1,10 @@
 function [elem] = find_order_statistic(array, k)
+    if length(array) == 1 && k == 1
+        elem.idxOriginal = 1;
+
+        return;
+    end
+
     left = 1; 
     right = length(array);
 
@@ -81,7 +87,7 @@ function [idx, array] = partion_with_enrichment(array, left, right)
         i = i + 1;
         j = j - 1;
     end
-
+    
     idx = j;
 
 end

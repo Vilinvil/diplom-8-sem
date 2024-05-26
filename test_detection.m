@@ -1,7 +1,7 @@
 clear;close all;
 addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
-imageFileName = ('./test_image.jpg');
+imageFileName = ('./test1_1.jpg');
 cannySigma = 1.4;
 cannyThreshold = [];
 houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
@@ -51,8 +51,8 @@ figure_classificated_lines_by_parametrs(K, B, maxY, ...
 
 lengths = convert_lines_to_lengths(lines);
 
-%  20 degrees
-thresholdK = 20 * pi / 180; 
+%  25 degrees
+thresholdK = 25 * pi / 180; 
 
 [kAxis, bAxis, k1, b1, k2 , b2] = detect_axis_of_symmetry(lengths, K, B, ... 
     DbscanLinesClassIdxess, DbscanLinesNumberClasses, thresholdK);

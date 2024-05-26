@@ -13,7 +13,7 @@ function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B,
 
     for idxClass = 1:numberClasses
        curArrayLength = lengthsByClass{idxClass};
-       medianIdx = ceil(length(curArrayLength) / 2) + 1;
+       medianIdx = fix(length(curArrayLength) / 2) + 1;
 
        [medianElem] = find_order_statistic(curArrayLength, medianIdx);
 
