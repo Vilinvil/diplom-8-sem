@@ -1,7 +1,7 @@
 function [classIdxes, numberClasses, flagExistenseMinus] = ...
-clasterization_dbscan_lines(lineParameters,maxDiff, minCountNeighbors)
+clasterization_dbscan_lines(lineParameters, eps, minCountNeighbors)
 
-    classIdxes = dbscan(lineParameters, maxDiff, minCountNeighbors);
+    classIdxes = dbscan(lineParameters, eps, minCountNeighbors);
 
     numberClasses = max(classIdxes);
     flagExistenseMinus = 0;
