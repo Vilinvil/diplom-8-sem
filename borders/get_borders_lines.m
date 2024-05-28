@@ -1,8 +1,5 @@
 function [lines, blackWhiteImage] = get_borders_lines( ... 
-    imageFileName, cannySigma, cannyTreshold, houghParams)
-
-    image = imread(imageFileName);
-    figure, imshow(image);title('Изначально');
+    image, cannySigma, cannyTreshold, houghParams)
 
     blackWhiteImage = rgb2gray(image);
     % figure, imshow(blackWhiteImage);title('gray');

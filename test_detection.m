@@ -1,13 +1,15 @@
 clear;close all;
 addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
-imageFileName = ('./test_image.jpg');
-cannySigma = 1.4;
+image = imread('./test1_rotated_7.jpg');
+figure, imshow(image);title('Изначально');
+
+cannySigma = 1.6;
 cannyThreshold = [];
 houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
 
 [lines, blackWhiteImage] = get_borders_lines( ...
-    imageFileName,  cannySigma, cannyThreshold, houghParams);
+    image,  cannySigma, cannyThreshold, houghParams);
 
 figure, imshow(blackWhiteImage),title('После выделения отрезков'), hold on;
 figure_lines_by_two_points(lines);
@@ -59,8 +61,8 @@ figure_classificated_lines_by_parametrs(K, B, maxY, ...
 
 lengths = convert_lines_to_lengths(lines);
 
-% 25 degrees
-thresholdK = 25 * pi / 180; 
+% 30 degrees
+thresholdK = 30 * pi / 180; 
 
 [kAxis, bAxis, k1, b1, k2 , b2] = detect_axis_of_symmetry(lengths, K, B, ... 
     DbscanLinesClassIdxess, DbscanLinesNumberClasses, thresholdK);

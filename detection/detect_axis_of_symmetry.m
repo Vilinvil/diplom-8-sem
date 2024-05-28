@@ -36,7 +36,7 @@ function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B,
         curMaxLenghtLineIdx = medianLengthClassIdxes{sortedIdxesMedianLenght(idxCurLine)}.medianIdx;
         
         k2 = K(curMaxLenghtLineIdx);
-        if abs(atan(k1) - atan(k2)) < threshholdPhi
+        if abs(abs(atan(k1)) - abs(atan(k2))) < threshholdPhi
             b2 = B(curMaxLenghtLineIdx);
             break;
         end
