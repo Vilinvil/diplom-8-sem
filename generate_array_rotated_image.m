@@ -1,29 +1,17 @@
-clear;close all;
+function [rotatedImages] = generate_array_rotated_image(...
+    imageFileName, minAngleRotate, maxAngleRotate, stepAngleRotate)
 
-imageFileName = ('./test1_0.jpg');
-image = imread(imageFileName);
-figure, imshow(image);title('Изначально');
-
-stepAngleRotate = 10;
-
-curAngle = stepAngleRotate;
-
-rotatedImages = cell(1, 360 / stepAngleRotate);
-
-while curAngle <= 100
-    curRotatedImage = imrotate(image, curAngle, 'bicubic', 'crop');
-    figure, imshow(curRotatedImage);title('угол = ' + string(curAngle));
+    image = imread(imageFileName);
     
-    curCropImage = imcrop(curRotatedImage, [70 40 100 60]);
-    figure, imshow(curCropImage); title('Обрезанное, угол = ' + ... 
-        string(curAngle));
-
-    rotatedImages{curAngle / stepAngleRotate} = curCropImage;
+    rotatedImages = cell(1, (maxAngleRotate - minAngleRotate)/stepAngleRotate);
     
-    curAngle = curAngle + stepAngleRotate;
-end
-
-for idxCurImage = 1:length(rotatedImages)
-    imwrite(rotatedImages{idxCurImage}, 'test1_rotated_' + ... 
-        string(idxCurImage) + '.jpg')
+    for idxStep = 0:(maxAngleRotate - minAngleRotate)/stepAngleRotate
+        curAngleRotate = minAngleRotate + idxStep*stepAngleRotate;
+    
+        curRotatedImage = imrotate(image, curAngleRotate, 'bicubic', 'crop');
+        
+        curCropImage = imcrop(curRotatedImage, [70 40 100 60]);
+    
+        rotatedImages{idxStep + 1} = curCropImage;
+    end
 end

@@ -16,7 +16,7 @@ idxCurLine = 1;
         end
 
         [curK, curB] = calc_parameters_of_line_by_rho_theta( ... 
-            curLine.rho, curLine.theta * 2 * pi / 360);
+            curLine.rho, curLine.theta * 2 * pi / 360, curLine.point1(1));
         K(idxCurLine) = curK;
         B(idxCurLine) = curB;
 

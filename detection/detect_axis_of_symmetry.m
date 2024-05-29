@@ -1,5 +1,5 @@
 function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B, ...
-    classIdxes, numberClasses, threshholdPhi)
+    classIdxes, numberClasses, thresholdHighPhi)
     lengthsByClass = cell(1, numberClasses);
     
     for idxCurLine = 1:length(classIdxes)
@@ -34,9 +34,10 @@ function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B,
     
     for idxCurLine = 2:numberClasses
         curMaxLenghtLineIdx = medianLengthClassIdxes{sortedIdxesMedianLenght(idxCurLine)}.medianIdx;
-        
         k2 = K(curMaxLenghtLineIdx);
-        if abs(abs(atan(k1)) - abs(atan(k2))) < threshholdPhi
+        
+        difPhi = abs(abs(atan(k1)) - abs(atan(k2)));
+        if difPhi < thresholdHighPhi % && (atan(k1) * atan(k2) < 0)
             b2 = B(curMaxLenghtLineIdx);
             break;
         end

@@ -56,6 +56,10 @@ function [idx, array] = partition(array, left, right)
         i = i + 1;
         j = j - 1;
     end
+    
+    if isempty(array(j).idxOriginal)
+        array(j).idxOriginal = j;
+    end
 
     idx = j;
 
@@ -88,6 +92,10 @@ function [idx, array] = partion_with_enrichment(array, left, right)
         j = j - 1;
     end
     
+    if isempty(array(j).idxOriginal)
+        array(j).idxOriginal = j;
+    end
+
     idx = j;
 
 end
