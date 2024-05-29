@@ -1,6 +1,6 @@
-function [elem] = find_order_statistic(array, k)
+function [idxOriginal] = find_order_statistic(array, k)
     if length(array) == 1 && k == 1
-        elem.idxOriginal = 1;
+        idxOriginal = 1;
 
         return;
     end
@@ -8,10 +8,21 @@ function [elem] = find_order_statistic(array, k)
     left = 1; 
     right = length(array);
 
+    idxZero = find_idx_zero(array);
+    if idxZero ~= 0
+        k = fix((idxZero - left)*k/right) + 1;
+        right = idxZero - 1;
+    end
+    
+    idxesOriginal = zeros(right - left + 1, 1);
+
     % in first time enrichment data with idxes in original array
-    [mid, array] = partion_with_enrichment(array, left, right);
+    [mid, array, idxesOriginal] = partion_with_enrichment(...
+        array, idxesOriginal, left, right);
     if mid == k
-        elem = array(mid);
+        idxOriginal = idxesOriginal(mid);
+
+        return;
     elseif (k < mid)
         right = mid;
     else 
@@ -20,11 +31,13 @@ function [elem] = find_order_statistic(array, k)
 
     
     while 1
-        [mid, array] = partition(array, left, right);
+        [mid, array, idxesOriginal] = partition(...
+            array, idxesOriginal, left, right);
         
         if mid == k
-            elem = array(mid);
-            break;
+            idxOriginal = idxesOriginal(mid);
+            
+            return;
         elseif (k < mid)
             right = mid;
         else 
@@ -34,17 +47,18 @@ function [elem] = find_order_statistic(array, k)
 end
 
 
-function [idx, array] = partition(array, left, right)
+function [idx, array, idxesOriginal] = partition(...
+    array, idxesOriginal, left, right)
     pivot = array(fix((left + right) / 2));
     i = left;
     j = right;
 
     while i<=j
-        while array(i).len < pivot.len
+        while array(i) < pivot
             i = i + 1;
         end
 
-        while array(j).len > pivot.len
+        while array(j) > pivot
             j = j - 1;
         end
 
@@ -53,31 +67,31 @@ function [idx, array] = partition(array, left, right)
         end
         
         [array(j), array(i)] = swap(array(i),array(j));
+        [idxesOriginal(j), idxesOriginal(i)] = swap(...
+            idxesOriginal(i), idxesOriginal(j));
         i = i + 1;
         j = j - 1;
     end
     
-    if isempty(array(j).idxOriginal)
-        array(j).idxOriginal = j;
-    end
 
     idx = j;
 
 end
 
-function [idx, array] = partion_with_enrichment(array, left, right)
+function [idx, array, idxesOriginal] = partion_with_enrichment(...
+    array, idxesOriginal, left, right)
     pivot = array(fix((left + right) / 2));
     i = left;
     j = right;
 
     while i<=j
-        while array(i).len < pivot.len
-            array(i).idxOriginal = i;
+        while array(i) < pivot
+            idxesOriginal(i) = i;
             i = i + 1;
         end
 
-        while array(j).len > pivot.len
-            array(j).idxOriginal = j;
+        while array(j) > pivot
+            idxesOriginal(j) = j;
             j = j - 1;
         end
 
@@ -85,15 +99,17 @@ function [idx, array] = partion_with_enrichment(array, left, right)
             break;
         end
         
-        array(i).idxOriginal = i;
-        array(j).idxOriginal = j;
+        idxesOriginal(i) = i;
+        idxesOriginal(j) = j;
         [array(j), array(i)] = swap(array(i), array(j));
+        [idxesOriginal(j), idxesOriginal(i)] = swap(...
+            idxesOriginal(i), idxesOriginal(j));
         i = i + 1;
         j = j - 1;
     end
     
-    if isempty(array(j).idxOriginal)
-        array(j).idxOriginal = j;
+    if idxesOriginal(j) == 0
+       idxesOriginal(j) = j;
     end
 
     idx = j;

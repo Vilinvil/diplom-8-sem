@@ -1,31 +1,38 @@
 function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B, ...
     classIdxes, numberClasses, thresholdHighPhi)
-    lengthsByClass = cell(1, numberClasses);
+
+    lengthsByClass = zeros([length(classIdxes) numberClasses]);
+    idxLineByClass = zeros([length(classIdxes) numberClasses]);
+    idxesInsert = ones([numberClasses 1]);
     
     for idxCurLine = 1:length(classIdxes)
         curClass = classIdxes(idxCurLine);
-        lengthsByClass{curClass} = [lengthsByClass{curClass}, ...
-            struct('len', lengths(idxCurLine), 'idxLine', idxCurLine)];
+        idxInsert = idxesInsert(curClass);
+        idxesInsert(curClass) = idxesInsert(curClass) + 1;
+        
+        lengthsByClass(idxInsert, curClass) = lengths(idxCurLine);
+        idxLineByClass(idxInsert, curClass) = idxCurLine;
     end
     
     
-    medianLengthClassIdxes = cell([numberClasses 1]);
+    % medianIdxes = zeros([numberClasses 1]);
+    % medianLenghts = zeros([numberClasses 1]);
+    medianLengthClassIdxes = zeros(numberClasses, 2);
 
     for idxClass = 1:numberClasses
-       curArrayLength = lengthsByClass{idxClass};
+       curArrayLength = lengthsByClass(:, idxClass);
        medianIdx = fix(length(curArrayLength) / 2) + 1;
 
-       [medianElem] = find_order_statistic(curArrayLength, medianIdx);
+       [medianIdxOriginal] = find_order_statistic(curArrayLength, medianIdx);
 
-       medianIdx = curArrayLength(medianElem.idxOriginal).idxLine;
-       medianLengthClassIdxes{idxClass} = struct('medianIdx', medianIdx, ...
-           'len', lengths(medianIdx));
+       medianIdx = idxLineByClass(medianIdxOriginal, idxClass);
+       medianLengthClassIdxes(idxClass, 1) = medianIdx;
+       medianLengthClassIdxes(idxClass, 2) = lengths(medianIdx);
     end
     
-    [~, sortedIdxesMedianLenght] = sort(cellfun(@(x) x.len, ... 
-        medianLengthClassIdxes), 'descend');
+    sortedIdxesMedianLenght = sortrows(medianLengthClassIdxes, 2, 'descend');
     
-    maxLengthLineIdx = medianLengthClassIdxes{sortedIdxesMedianLenght(1)}.medianIdx;
+    maxLengthLineIdx = sortedIdxesMedianLenght(1, 1);
     k1 = K(maxLengthLineIdx);
     b1 = B(maxLengthLineIdx);
 
@@ -33,7 +40,7 @@ function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B,
     b2 = 0;
     
     for idxCurLine = 2:numberClasses
-        curMaxLenghtLineIdx = medianLengthClassIdxes{sortedIdxesMedianLenght(idxCurLine)}.medianIdx;
+        curMaxLenghtLineIdx = sortedIdxesMedianLenght(idxCurLine, 1);
         k2 = K(curMaxLenghtLineIdx);
         
         difPhi = abs(abs(atan(k1)) - abs(atan(k2)));

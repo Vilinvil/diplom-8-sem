@@ -1,5 +1,4 @@
 function [K, B, lines] = convert_lines_to_parameters(lines, maxY)
-addpath('utils\');
 K = zeros([length(lines) 1]);
 B = zeros([length(lines) 1]);
 
@@ -10,7 +9,9 @@ idxCurLine = 1;
         if get_len_line(curLine) > 0.4 * maxY
            [line1, line2] = divide_line_to_two_lines(curLine);
            curLine = line1;
-           lines = [lines, line2];
+           lines  = [lines, line2];
+           K = [K; 0];
+           B = [B; 0];
 
            countLines = countLines + 1; 
         end
