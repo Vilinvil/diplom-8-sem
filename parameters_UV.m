@@ -8,6 +8,7 @@ Kdv = 70;
 Tdv = 0.15;
 Umax = 10;
 a = 0.4;
+alpha = pi /4;
 
 Mout = 0;
 K1 = 1.0400;
