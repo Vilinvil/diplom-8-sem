@@ -1,6 +1,6 @@
 clear, close all;
-addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
-
+addpath('.\utils\arrays', ".\clasterization", '.\figure', ...
+    '.\detection', '.\borders', '.\utils');
 imageFileName = ('./test1_0.jpg');
 
 cannySigma = 3;
