@@ -1,12 +1,12 @@
 clear, close all;
 addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
 
-image = imread('./test1_rotated_2.jpg');
+image = imread('./test1_5.jpg');
 figure, imshow(image);title('Изначально');
 
-cannySigma = 3;
-cannyThreshold = [];
-houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap', 3, 'MinLength', 5);
+cannySigma = 40;
+cannyThreshold = [0.01 0.5];
+houghParams = struct('threshold', 0.2, 'peaks', 2, 'FillGap', 3, 'MinLength', 1);
 
 [lines, blackWhiteImage] = get_borders_lines( ...
     image,  cannySigma, cannyThreshold, houghParams);
@@ -47,7 +47,7 @@ lineParameters = [phi, normB];
 %     + string(dbscanPointsFlagExistanseMinus)), hold on;
 % figure_classificated_points(dbscanPoints, dbscanPointsClassIdxes, dbscanPointsNumberClasses);
 
-eps = 0.3;
+eps = 0.25;
 minCountNeighbors = 2;
 [DbscanLinesClassIdxess, DbscanLinesNumberClasses, DbscanFlagExistenceMinus] = ... 
     clasterization_dbscan_lines(lineParameters, eps, minCountNeighbors);

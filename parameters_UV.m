@@ -14,4 +14,4 @@ Mout = 0;
 K1 = 0.989;
 K2 = 1.316;
 
-firstPsi = 15 * pi / 180;
+firstPsi = 0 * pi / 180;
