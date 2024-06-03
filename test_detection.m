@@ -1,5 +1,6 @@
 clear, close all;
-addpath('.\utils\arrays', ".\clasterization", '.\figure', '.\detection', '.\borders');
+addpath('.\utils\arrays','.\utils', ".\clasterization",...
+    '.\figure', '.\detection', '.\borders');
 
 image = imread('./test1_5.jpg');
 figure, imshow(image);title('Изначально');
