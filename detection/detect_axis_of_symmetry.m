@@ -1,6 +1,17 @@
 function [kAxis, bAxis, k1, b1, k2, b2] = detect_axis_of_symmetry(lengths, K, B, ...
     classIdxes, numberClasses, thresholdHighPhi)
 
+    if numberClasses == 0
+        kAxis = 0;
+        bAxis = 0;
+        k1 = 0;
+        k2 = 0;
+        b1 = 0;
+        b2 = 0;
+
+        return
+    end
+
     lengthsByClass = zeros([length(classIdxes) numberClasses]);
     idxLineByClass = zeros([length(classIdxes) numberClasses]);
     idxesInsert = ones([numberClasses 1]);

@@ -45,5 +45,5 @@ function [difPsi] = calc_dif_psi(requiredPsi, image, cannySigma, cannyThreshold,
         phiAxis = phiAxis + pi;
     end
 
-    difPsi = phiAxis - pi / 2 - requiredPsi;
+    difPsi = -phiAxis + pi / 2;
 end

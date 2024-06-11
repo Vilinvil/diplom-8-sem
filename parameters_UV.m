@@ -28,11 +28,11 @@ K2Analytically = (((Tuv + Tdv)/(2*epsw*sqrt(Tdv*Tuv)))^2 - 1) / ...
 Tw = sqrt(Tdv * Tuv /(1 + KdvTotal * Kuv * K2Analytically));
 Kw = 1 * KdvTotal * Kuv / (1 + KdvTotal * Kuv * K2Analytically);
 
-M = 1.05;
+M = 1;
 
 KpsiLessThan = M*M + M*sqrt(M*M - 1) / 4 / Tw;
 
 % let Kpsi = 1.3
-Kpsi = 1.5;
+Kpsi = 0.9;
 
 K1Analytically = Kpsi / Kw;
