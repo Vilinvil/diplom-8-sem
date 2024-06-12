@@ -32,7 +32,7 @@ M = 1;
 
 KpsiLessThan = M*M + M*sqrt(M*M - 1) / 4 / Tw;
 
-% let Kpsi = 1.3
+% let Kpsi = 0.9
 Kpsi = 0.9;
 
 K1Analytically = Kpsi / Kw;
