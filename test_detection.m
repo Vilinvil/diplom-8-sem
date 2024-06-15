@@ -2,12 +2,12 @@ clear, close all;
 addpath('.\utils\arrays','.\utils', ".\clasterization",...
     '.\figure', '.\detection', '.\borders');
 
-image = imread('./test1_5.jpg');
+image = imread('./test1_benchmark.jpg');
 figure, imshow(image);title('Изначально');
 
-cannySigma = 40;
-cannyThreshold = [0.01 0.5];
-houghParams = struct('threshold', 0.2, 'peaks', 2, 'FillGap', 3, 'MinLength', 1);
+cannySigma = 17;
+cannyThreshold = [];
+houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap',3, 'MinLength', 5);
 
 [lines, blackWhiteImage] = get_borders_lines( ...
     image,  cannySigma, cannyThreshold, houghParams);
