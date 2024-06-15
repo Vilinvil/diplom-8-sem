@@ -11,12 +11,12 @@ countImages = 19;
 numberOfTimes = 1000;
 timesCall = zeros(1, numberOfTimes * countImages);
 
-
 for idxCurImage = 1:countImages
     image = imread('./test1_benchmark_rotate_' + string(idxCurImage)...
     + '.jpg');
+    maxNumCompThreads(1);
 
-    for idxCurTimes = 1:numberOfTimes
+    for idxCurTimes = 1:numberOfTimes     
         tic; toc;
         tStart = tic;         
     
@@ -26,6 +26,8 @@ for idxCurImage = 1:countImages
         tEnd = toc;
         timesCall((idxCurImage - 1)*numberOfTimes + idxCurTimes) = tEnd;
     end
+
+    maxNumCompThreads('automatic');
 end
 
 medianTime = median(timesCall);
