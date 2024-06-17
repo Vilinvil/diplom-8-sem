@@ -10,7 +10,7 @@ Umax = 10;
 a = 0.4;
 alpha = pi /4;
 
-Mout = 0;
+Mout = 20;
 K1 = 44.8;
 K2 = 27.6;
 
@@ -38,4 +38,4 @@ Kpsi = 1.5;
 K1Analytically = round(Kpsi / Kw, 2);
 
 Eust = Mout / (KdvTotal * K1Analytically) * 180 / pi;
-Tcor = 1;
+Tcor = 2;
