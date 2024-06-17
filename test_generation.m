@@ -15,14 +15,14 @@ stepAngleRotate = 0.5;
 rotatedImages = generate_array_rotated_image(...
     imageFileName, minAngleRotate, maxAngleRotate, stepAngleRotate);
 
-diffsPsi = zeros(size(rotatedImages, 1), 1);
+anglesPsi = zeros(size(rotatedImages, 1), 1);
 
 for idxCur = 1:size(rotatedImages, 1)
     curImage = double(squeeze(rotatedImages(idxCur, :, :, :))) / 255;
     % figure, imshow(curImage), title("Повернуто на " + ...
     %     string(minAngleRotate + (idxCur - 1)*stepAngleRotate) + " градусов");
 
-    difPsi = calc_dif_psi(0, curImage,  ...
+    psi = calc_dif_psi(0, curImage,  ...
         cannySigma, cannyThreshold, houghParams, epsDbscan);
-    diffsPsi(idxCur) = (difPsi) / pi * 180;
+    anglesPsi(idxCur) = (psi) / pi * 180;
 end

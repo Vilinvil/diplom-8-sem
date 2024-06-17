@@ -1,4 +1,4 @@
-function [difPsi] = calc_dif_psi(requiredPsi, image, cannySigma, cannyThreshold,... 
+function [psi] = calc_psi(requiredPsi, image, cannySigma, cannyThreshold,... 
     houghParams, epsDbscan)
 
     [lines, blackWhiteImage] = get_borders_lines( ...
@@ -45,5 +45,5 @@ function [difPsi] = calc_dif_psi(requiredPsi, image, cannySigma, cannyThreshold,
         phiAxis = phiAxis + pi;
     end
 
-    difPsi = -phiAxis + pi / 2;
+    psi = -phiAxis + pi / 2;
 end

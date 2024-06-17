@@ -20,7 +20,7 @@ for idxCurImage = 1:countImages
         tic; toc;
         tStart = tic;         
     
-        dif_psi = calc_dif_psi(...
+        psi = calc_psi(...
             0, image, cannySigma, cannyThreshold, houghParams, epsDbscan);
         
         tEnd = toc;
