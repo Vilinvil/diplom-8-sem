@@ -2,10 +2,10 @@ clear, close all;
 addpath('.\utils\arrays','.\utils', ".\clasterization",...
     '.\figure', '.\detection', '.\borders');
 
-image = imread('./test1_benchmark.jpg');
+image = imread('./test_image.jpg');
 figure, imshow(image);title('Изначально');
 
-cannySigma = 17;
+cannySigma = 3;
 cannyThreshold = [];
 houghParams = struct('threshold', 0.5, 'peaks', 4, 'FillGap',3, 'MinLength', 5);
 
@@ -48,7 +48,7 @@ lineParameters = [phi, normB];
 %     + string(dbscanPointsFlagExistanseMinus)), hold on;
 % figure_classificated_points(dbscanPoints, dbscanPointsClassIdxes, dbscanPointsNumberClasses);
 
-eps = 0.25;
+eps = 0.2;
 minCountNeighbors = 2;
 [DbscanLinesClassIdxess, DbscanLinesNumberClasses, DbscanFlagExistenceMinus] = ... 
     clasterization_dbscan_lines(lineParameters, eps, minCountNeighbors);
@@ -72,6 +72,22 @@ thresholdHighPhi = 30 * pi / 180;
     DbscanLinesClassIdxess, DbscanLinesNumberClasses, thresholdHighPhi);
 
 figure, imshow(blackWhiteImage),title('Ось трубопровода'), hold on;
-figure_lines_by_parameters(kAxis, bAxis, maxY, 'red');
-figure_lines_by_parameters(k1, b1, maxY, 'green');
-    figure_lines_by_parameters(k2, b2, maxY, 'green');
+% figure_lines_by_parameters(kAxis, bAxis, maxY, 'red');
+y = 0:maxY;
+    for i = 1:length(kAxis)
+        x = (y - bAxis(i)) / kAxis(i);
+        plot(x, y, '*');
+    end
+y1 = 0:maxY;
+    for i = 1:length(k1)
+        x = (y1 - b1(i)) / k1(i);
+        plot(x, y1, 'LineWidth',2);
+    end
+y2 = 0:maxY;
+    for i = 1:length(k2)
+        x = (y - b2(i)) / k2(i);
+        plot(x, y2, 'LineWidth',2);
+    end
+
+% figure_lines_by_parameters(k1, b1, maxY, '*');
+%     figure_lines_by_parameters(k2, b2, maxY, '*');
